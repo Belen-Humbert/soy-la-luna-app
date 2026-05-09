@@ -1,16 +1,30 @@
+import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import StarsCanvas from '../components/StarsCanvas'
 import MoonPhaseCard from '../components/MoonPhaseCard'
 import TarotDailyCard from '../components/TarotDailyCard'
 import RitualesCard from '../components/RitualesCard'
 import EventosAstronomicos from '../components/EventosAstronomicos'
+import NotificacionesConfig from '../components/NotificacionesConfig'
+import { getNotificationPrefs, checkUpcomingEvents } from '../lib/notifications'
+import { getProximosEventos } from '../lib/eventosAstronomicos'
 
 export default function Home() {
   const { user, signOut } = useAuth()
+  const [showNotifConfig, setShowNotifConfig] = useState(false)
   const name = user?.user_metadata?.name || user?.email?.split('@')[0] || 'Luna'
 
   const hora = new Date().getHours()
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches'
+
+  // Verificar eventos próximos al cargar
+  useEffect(() => {
+    const prefs = getNotificationPrefs()
+    if (prefs.enabled && prefs.eventos) {
+      const eventos = getProximosEventos(new Date(), 12)
+      checkUpcomingEvents(eventos)
+    }
+  }, [])
 
   return (
     <div className="relative min-h-screen pb-24">
@@ -20,12 +34,21 @@ export default function Home() {
         <div className="font-serif italic text-luna-gold text-lg flex items-center gap-2">
           🌙 Soy La Luna
         </div>
-        <button
-          onClick={signOut}
-          className="text-white/30 text-xs hover:text-white/60 transition-colors"
-        >
-          Salir
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowNotifConfig(true)}
+            className="text-white/30 hover:text-luna-gold transition-colors text-lg"
+            title="Notificaciones"
+          >
+            🔔
+          </button>
+          <button
+            onClick={signOut}
+            className="text-white/30 text-xs hover:text-white/60 transition-colors"
+          >
+            Salir
+          </button>
+        </div>
       </nav>
 
       <div className="relative z-10">
@@ -43,6 +66,13 @@ export default function Home() {
         <RitualesCard />
         <EventosAstronomicos />
       </div>
+
+      {showNotifConfig && (
+        <NotificacionesConfig
+          user={user}
+          onClose={() => setShowNotifConfig(false)}
+        />
+      )}
     </div>
   )
 }
