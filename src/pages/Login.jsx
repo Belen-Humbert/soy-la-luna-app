@@ -84,6 +84,9 @@ export default function Login() {
 
           <div className="mt-5 pt-4 border-t border-white/5 text-center">
             <p className="text-white/30 text-xs">
+              ¿Olvidaste tu contraseña? <Link to="/forgot-password" className="text-luna-gold hover:text-luna-gold-light transition-colors">Recuperala</Link>
+            </p>
+            <p className="text-white/30 text-xs">
               ¿No tenés cuenta?{' '}
               <Link to="/register" className="text-luna-gold hover:text-luna-gold-light transition-colors">
                 Registrate
