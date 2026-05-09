@@ -67,7 +67,7 @@ export function scheduleNotification(card, moonPhase, prefs) {
 export function showDailyNotification(card, moonPhase) {
   if (Notification.permission !== 'granted') return
 
-  new Notification('🌙 Soy La Luna — Tu cosmos de hoy', {
+  new Notification('🌙 Soy La Luna — La luna nos guía', {
     body: `${moonPhase.emoji} ${moonPhase.name} · ${card.emoji} ${card.nombre}\n"${card.mensaje.substring(0, 80)}..."`,
     icon: '/moon-192.png',
     badge: '/moon-192.png',

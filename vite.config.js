@@ -11,7 +11,7 @@ export default defineConfig({
       manifest: {
         name: 'Soy La Luna',
         short_name: 'Soy La Luna',
-        description: 'Tu cosmos personal — fases lunares, tarot diario y rituales',
+        description: 'La luna nos guía — fases lunares, tarot diario y rituales',
         theme_color: '#0d1117',
         background_color: '#0d1117',
         display: 'standalone',

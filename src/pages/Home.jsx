@@ -54,7 +54,7 @@ export default function Home() {
       <div className="relative z-10">
         <div className="text-center px-4 pt-7 pb-5">
           <p className="text-[10px] tracking-[3px] uppercase text-luna-gold mb-1">
-            ✦ Tu cosmos de hoy ✦
+            ✦ La luna nos guía ✦
           </p>
           <h1 className="font-serif italic text-luna-rose text-3xl">
             {saludo}, {name}

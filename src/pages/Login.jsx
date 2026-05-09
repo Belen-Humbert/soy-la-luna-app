@@ -33,7 +33,7 @@ export default function Login() {
         <div className="text-center mb-10">
           <div className="text-4xl mb-3">🌙</div>
           <h1 className="font-serif italic text-luna-rose text-4xl mb-1">Soy La Luna</h1>
-          <p className="text-white/40 text-xs tracking-widest uppercase">Tu cosmos personal</p>
+          <p className="text-white/40 text-xs tracking-widest uppercase">La luna nos guía</p>
         </div>
 
         {/* Card */}

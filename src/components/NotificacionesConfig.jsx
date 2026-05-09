@@ -62,7 +62,7 @@ export default function NotificacionesConfig({ user, onClose }) {
         <div className="flex items-center justify-between mb-5">
           <div>
             <h3 className="font-serif text-white text-lg">Notificaciones</h3>
-            <p className="text-white/30 text-xs mt-0.5">Recibí tu cosmos cada día</p>
+            <p className="text-white/30 text-xs mt-0.5">Dejate guiar por la luna</p>
           </div>
           <button onClick={onClose} className="text-white/30 hover:text-white/60 text-xl transition-colors">×</button>
         </div>

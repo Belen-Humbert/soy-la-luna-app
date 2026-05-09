@@ -36,7 +36,7 @@ export default function Register() {
         <StarsCanvas />
         <div className="relative z-10 w-full max-w-sm text-center animate-fade-up">
           <div className="text-5xl mb-4">🌙</div>
-          <h2 className="font-serif italic text-luna-rose text-2xl mb-3">¡Bienvenida al cosmos!</h2>
+          <h2 className="font-serif italic text-luna-rose text-2xl mb-3">¡La luna te da la bienvenida!</h2>
           <p className="text-white/50 text-sm mb-6">
             Te enviamos un email de confirmación. Revisá tu bandeja de entrada y activá tu cuenta.
           </p>
@@ -57,7 +57,7 @@ export default function Register() {
         <div className="text-center mb-10">
           <div className="text-4xl mb-3">🌙</div>
           <h1 className="font-serif italic text-luna-rose text-4xl mb-1">Soy La Luna</h1>
-          <p className="text-white/40 text-xs tracking-widest uppercase">Creá tu cuenta</p>
+          <p className="text-white/40 text-xs tracking-widest uppercase">La luna nos guía</p>
         </div>
 
         {/* Card */}
