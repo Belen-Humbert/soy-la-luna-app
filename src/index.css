@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0d1117;
+    color: #e8e8e8;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-full py-3 px-6 rounded-full bg-luna-rose text-luna-bg font-medium text-sm tracking-wide transition-all duration-200 hover:bg-luna-rose-light active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply w-full py-3 px-6 rounded-full border border-luna-gold/30 text-luna-gold font-medium text-sm tracking-wide transition-all duration-200 hover:bg-luna-gold/10 active:scale-95;
+  }
+
+  .card-luna {
+    @apply bg-[#1e2838]/80 border border-luna-gold/20 rounded-2xl p-4 backdrop-blur-sm;
+  }
+
+  .input-luna {
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-luna-gold/40 transition-all duration-200;
+  }
+
+  .label-luna {
+    @apply text-[10px] tracking-[2px] uppercase text-luna-gold flex items-center gap-1.5 mb-2;
+  }
+
+  .section-title {
+    @apply font-serif italic text-luna-rose text-xl px-4 pt-5 pb-3;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
+
+/* Stars canvas */
+#stars-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
