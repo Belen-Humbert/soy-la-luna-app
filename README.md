@@ -1,12 +1,12 @@
 # 🌙 Soy La Luna
 
-**Tu cosmos personal** — fases lunares, tarot diario, rituales y eventos astronómicos.
+**La luna nos guía** — fases lunares, tarot diario, rituales y eventos astronómicos.
 
 App web progresiva (PWA) instalable en celular, construida con React + Vite + Supabase.
 
 ---
 
-## ✨ Features
+##  Features
 
 ### 🌒 Fase lunar del día
 Calcula en tiempo real la fase lunar usando el ciclo sinódico de 29.53 días. Muestra nombre, descripción, energía del día, ritual sugerido, porcentaje de iluminación y día del ciclo lunar.
@@ -28,7 +28,7 @@ Registro e inicio de sesión con email y contraseña via Supabase Auth. Historia
 
 ---
 
-## 🛠 Stack tecnológico
+##  Stack tecnológico
 
 | Capa | Tecnología |
 |------|-----------|
@@ -42,7 +42,7 @@ Registro e inicio de sesión con email y contraseña via Supabase Auth. Historia
 
 ---
 
-## 📁 Estructura del proyecto
+##  Estructura del proyecto
 
 ```
 soy-la-luna/
@@ -85,7 +85,7 @@ soy-la-luna/
 
 ---
 
-## 🚀 Setup local
+##  Setup local
 
 ### Requisitos
 - Node.js v20+
@@ -150,7 +150,7 @@ La app corre en `http://localhost:5173`
 
 ---
 
-## 🌐 Deploy en Vercel
+##  Deploy en Vercel
 
 ### Primera vez
 
@@ -174,7 +174,7 @@ git push
 
 ---
 
-## 📱 Instalar como app (PWA)
+##  Instalar como app (PWA)
 
 **Android (Chrome):**
 1. Abrir la URL en Chrome
@@ -186,7 +186,7 @@ git push
 
 ---
 
-## 🎨 Paleta de colores
+##  Paleta de colores
 
 | Variable | Hex | Uso |
 |----------|-----|-----|
@@ -198,7 +198,7 @@ git push
 
 ---
 
-## 🔮 Contenido
+##  Contenido
 
 ### Tarot
 Los 78 arcanos del Tarot Rider-Waite en español: 22 arcanos mayores (El Loco al Mundo) y 56 menores (Copas, Oros, Espadas y Bastos). Cada carta tiene nombre, numeral, emoji, palabras clave, descripción y mensaje oráculo.
@@ -224,4 +224,4 @@ VITE_NASA_API_KEY=DEMO_KEY
 
 ---
 
-*Hecho con intención ✦ por Belén Humbert*
+*Hecho con amor ✦ por Belén Humbert*
