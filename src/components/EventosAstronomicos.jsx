@@ -11,23 +11,34 @@ const CATEGORIA_CONFIG = {
 
 function DaysUntilBadge({ days }) {
   if (days === 0) return (
-    <span className="text-[9px] px-2 py-0.5 rounded-full bg-luna-rose/20 text-luna-rose border border-luna-rose/30">
-      Hoy
+    <span className="text-[10px] px-2.5 py-1 rounded-full bg-luna-rose/20 text-luna-rose border border-luna-rose/30 whitespace-nowrap">
+      ¡Hoy!
     </span>
   )
   if (days === 1) return (
-    <span className="text-[9px] px-2 py-0.5 rounded-full bg-luna-gold/20 text-luna-gold border border-luna-gold/30">
+    <span className="text-[10px] px-2.5 py-1 rounded-full bg-luna-gold/20 text-luna-gold border border-luna-gold/30 whitespace-nowrap">
       Mañana
     </span>
   )
   if (days <= 7) return (
-    <span className="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white/60 border border-white/10">
-      {days}d
+    <span className="text-[10px] px-2.5 py-1 rounded-full bg-white/10 text-white/70 border border-white/10 whitespace-nowrap">
+      En {days} días
+    </span>
+  )
+  if (days <= 30) return (
+    <span className="text-[10px] px-2.5 py-1 rounded-full bg-white/5 text-white/40 border border-white/5 whitespace-nowrap">
+      En {days} días
+    </span>
+  )
+  // Más de un mes — mostrar en semanas o meses
+  if (days < 60) return (
+    <span className="text-[10px] px-2.5 py-1 rounded-full bg-white/5 text-white/30 border border-white/5 whitespace-nowrap">
+      En {Math.round(days / 7)} semanas
     </span>
   )
   return (
-    <span className="text-[9px] px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5">
-      {days}d
+    <span className="text-[10px] px-2.5 py-1 rounded-full bg-white/5 text-white/25 border border-white/5 whitespace-nowrap">
+      En {Math.round(days / 30)} meses
     </span>
   )
 }
@@ -40,7 +51,6 @@ export default function EventosAstronomicos() {
   const eventos = useMemo(() => getProximosEventos(new Date(), 12), [])
   const visibles = showAll ? eventos : eventos.slice(0, 4)
 
-  // Próximo evento destacado
   const nextEvent = eventos[0]
 
   return (
@@ -58,7 +68,6 @@ export default function EventosAstronomicos() {
             </div>
 
             <div className="flex items-center gap-4">
-              {/* Fecha */}
               <div className="text-center flex-shrink-0 bg-white/5 rounded-xl p-3 min-w-[56px]">
                 <div className="font-serif text-2xl text-luna-rose leading-none">
                   {formatFecha(nextEvent.fecha).dia}
@@ -68,7 +77,6 @@ export default function EventosAstronomicos() {
                 </div>
               </div>
 
-              {/* Info */}
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xl">{nextEvent.emoji}</span>
@@ -119,10 +127,8 @@ export default function EventosAstronomicos() {
                       </div>
                     </div>
 
-                    {/* Emoji */}
                     <span className="text-lg flex-shrink-0">{evento.emoji}</span>
 
-                    {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="text-xs text-white/80 truncate">{evento.tipo}</div>
                       {evento.signo && (
@@ -130,7 +136,6 @@ export default function EventosAstronomicos() {
                       )}
                     </div>
 
-                    {/* Badge días */}
                     <DaysUntilBadge days={evento.daysUntil} />
                   </div>
 
@@ -140,20 +145,24 @@ export default function EventosAstronomicos() {
                       <p className="text-white/50 text-xs leading-relaxed mb-2">
                         {evento.descripcion}
                       </p>
-                      {evento.visible && (
-                        <p className="text-[10px] text-white/25">
-                          📍 Visible desde: {evento.visible}
-                        </p>
+                      {/* Duración del evento */}
+                      {evento.duracion && (
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className="text-[10px] text-white/25">⏱ Duración:</span>
+                          <span className="text-[10px]" style={{ color: config.color }}>{evento.duracion}</span>
+                        </div>
                       )}
                       {evento.zhr && (
-                        <p className="text-[10px]" style={{ color: config.color }}>
-                          ⭐ Hasta {evento.zhr} meteoros/hora en el pico
-                        </p>
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className="text-[10px] text-white/25">⭐ Intensidad:</span>
+                          <span className="text-[10px]" style={{ color: config.color }}>hasta {evento.zhr} meteoros/hora</span>
+                        </div>
                       )}
-                      {evento.duracion && (
-                        <p className="text-[10px] text-white/25 mt-1">
-                          ⏱ {evento.duracion}
-                        </p>
+                      {evento.visible && (
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] text-white/25">📍 Visible desde:</span>
+                          <span className="text-[10px] text-white/40">{evento.visible}</span>
+                        </div>
                       )}
                     </div>
                   )}
@@ -173,36 +182,24 @@ export default function EventosAstronomicos() {
         </div>
       </div>
 
-      {/* NASA - Imagen del día */}
+      {/* NASA imagen del día */}
       {!apodLoading && apod && apod.media_type === 'image' && (
         <div className="relative overflow-hidden rounded-2xl border border-luna-gold/20 bg-[#1e2838]/90 backdrop-blur-sm">
           <div className="label-luna p-4 pb-3">
             <span>🚀</span> NASA · Astronomy Picture of the Day
           </div>
-
-          {/* Imagen cuadrada — máximo 400px en desktop */}
-          <div className="mx-4 rounded-xl overflow-hidden mx-auto"
-            style={{ aspectRatio: '1/1', maxWidth: '400px' }}>
-            <img
-              src={apod.hdurl || apod.url}
-              alt={apod.title}
-              className="w-full h-full object-cover"
-            />
+          <div className="mx-4 rounded-xl overflow-hidden mx-auto" style={{ aspectRatio: '1/1', maxWidth: '400px' }}>
+            <img src={apod.hdurl || apod.url} alt={apod.title} className="w-full h-full object-cover" />
           </div>
-
-          {/* Info debajo */}
           <div className="p-4 pt-3">
             <h4 className="font-serif text-white text-sm mb-2">{apod.title}</h4>
-            <p className="text-white/40 text-[11px] leading-relaxed">
-              {apod.explanation}
-            </p>
+            <p className="text-white/40 text-[11px] leading-relaxed">{apod.explanation}</p>
             <p className="text-white/20 text-[10px] mt-2">
               {apod.date} · {apod.copyright ? `© ${apod.copyright}` : 'NASA / Public Domain'}
             </p>
           </div>
         </div>
       )}
-
     </div>
   )
 }
