@@ -2,6 +2,8 @@ import { useAuth } from '../hooks/useAuth'
 import StarsCanvas from '../components/StarsCanvas'
 import MoonPhaseCard from '../components/MoonPhaseCard'
 import TarotDailyCard from '../components/TarotDailyCard'
+import RitualesCard from '../components/RitualesCard'
+import EventosAstronomicos from '../components/EventosAstronomicos'
 
 export default function Home() {
   const { user, signOut } = useAuth()
@@ -38,15 +40,8 @@ export default function Home() {
 
         <MoonPhaseCard />
         <TarotDailyCard user={user} />
-
-        <div className="mx-4 mt-2">
-          <div className="card-luna opacity-50">
-            <div className="label-luna">
-              <span>✨</span> Rituales del día
-            </div>
-            <p className="text-white/30 text-sm mt-1">Próximamente...</p>
-          </div>
-        </div>
+        <RitualesCard />
+        <EventosAstronomicos />
       </div>
     </div>
   )
