@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTarotDaily } from '../hooks/useTarotDaily'
+import TarotCardSVG from './TarotCardSVG'
 
 const PALO_COLORS = {
   'Copas': '#e8a4b0',
@@ -8,64 +9,13 @@ const PALO_COLORS = {
   'Bastos': '#c4a882',
 }
 
-function TarotCardVisual({ card, size = 'md', flipped = false }) {
-  const sizes = {
-    sm: { w: 'w-10', h: 'h-16', emoji: 'text-xl', name: 'text-[7px]', roman: 'text-[8px]' },
-    md: { w: 'w-[120px]', h: 'h-[190px]', emoji: 'text-4xl', name: 'text-[10px]', roman: 'text-[11px]' },
-    lg: { w: 'w-[160px]', h: 'h-[256px]', emoji: 'text-6xl', name: 'text-sm', roman: 'text-sm' },
-  }
-  const s = sizes[size]
-  const color = card?.palo ? PALO_COLORS[card.palo] : '#c9a84c'
-
-  if (flipped) {
-    return (
-      <div className={`${s.w} ${s.h} rounded-lg border border-luna-gold/30 bg-gradient-to-br from-[#1a2035] to-[#0d1117] flex items-center justify-center`}>
-        <div className="text-luna-gold/20 text-2xl">✦</div>
-      </div>
-    )
-  }
-
-  return (
-    <div
-      className={`${s.w} ${s.h} rounded-lg relative overflow-hidden flex flex-col items-center justify-center gap-1`}
-      style={{
-        background: 'linear-gradient(145deg, #1a2035, #252f45)',
-        border: `1px solid ${color}40`,
-      }}
-    >
-      {/* Marco interior */}
-      <div className="absolute inset-[6px] rounded border"
-        style={{ borderColor: `${color}20` }} />
-
-      {/* Numeral */}
-      <div className={`${s.roman} font-serif`} style={{ color }}>
-        {card?.numeral}
-      </div>
-
-      {/* Emoji */}
-      <div className={s.emoji}>{card?.emoji}</div>
-
-      {/* Nombre */}
-      <div className={`${s.name} font-serif text-center px-2 leading-tight`}
-        style={{ color }}>
-        {card?.nombre}
-      </div>
-
-      {/* Palo (si aplica) */}
-      {card?.palo && (
-        <div className="text-[7px] tracking-widest uppercase absolute bottom-2"
-          style={{ color: `${color}80` }}>
-          {card.palo}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export default function TarotDailyCard({ user }) {
   const { card, history, loading, saving, revealed, revealCard } = useTarotDaily(user)
   const [showHistory, setShowHistory] = useState(false)
   const [isFlipping, setIsFlipping] = useState(false)
+
+  const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+  const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
 
   const handleReveal = async () => {
     if (revealed) return
@@ -76,8 +26,7 @@ export default function TarotDailyCard({ user }) {
     }, 400)
   }
 
-  const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
-  const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+  const color = card?.palo ? PALO_COLORS[card.palo] : '#c9a84c'
 
   if (loading) {
     return (
@@ -89,12 +38,10 @@ export default function TarotDailyCard({ user }) {
 
   return (
     <div className="mx-4 mb-3">
-      {/* Card principal */}
       <div className="relative overflow-hidden rounded-2xl border border-luna-gold/20 bg-gradient-to-b from-[#1e2838]/90 to-[#151d2a]/90 backdrop-blur-sm">
 
-        {/* Glow de fondo */}
         <div className="absolute inset-0 opacity-15 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 30% 50%, #e8a4b080 0%, transparent 65%)' }} />
+          style={{ background: `radial-gradient(ellipse at 30% 50%, ${color}80 0%, transparent 65%)` }} />
 
         <div className="relative z-10 p-5">
           <div className="label-luna mb-4">
@@ -110,13 +57,14 @@ export default function TarotDailyCard({ user }) {
           </div>
 
           {!revealed ? (
-            // Estado: carta no revelada
             <div className="flex flex-col items-center py-4">
+              {/* Carta boca abajo */}
               <div
                 className={`cursor-pointer transition-transform duration-300 ${isFlipping ? 'scale-x-0' : 'scale-x-100'}`}
                 onClick={handleReveal}
+                style={{ filter: 'brightness(0.3)' }}
               >
-                <TarotCardVisual card={card} size="lg" flipped={!revealed || isFlipping} />
+                <TarotCardSVG card={card} size="lg" />
               </div>
               <p className="text-white/30 text-xs mt-4 text-center">
                 Tocá la carta para revelar tu arcano de hoy
@@ -130,19 +78,19 @@ export default function TarotDailyCard({ user }) {
               </button>
             </div>
           ) : (
-            // Estado: carta revelada
             <div>
               <div className="flex gap-4 items-start">
-                {/* Carta */}
+                {/* Carta ilustrada */}
                 <div className="flex-shrink-0 animate-fade-up">
-                  <TarotCardVisual card={card} size="md" />
+                  <TarotCardSVG card={card} size="lg" />
                 </div>
 
                 {/* Info */}
-                <div className="flex-1 min-w-0 animate-fade-up" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
-                  {/* Arcano tipo */}
+                <div className="flex-1 min-w-0 animate-fade-up"
+                  style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
+
                   <div className="text-[9px] tracking-widest uppercase mb-1"
-                    style={{ color: card?.palo ? PALO_COLORS[card.palo] : '#c9a84c' }}>
+                    style={{ color }}>
                     {card?.arcano === 'mayor' ? 'Arcano Mayor' : `Arcano Menor · ${card?.palo}`}
                   </div>
 
@@ -150,14 +98,13 @@ export default function TarotDailyCard({ user }) {
                     {card?.nombre}
                   </h3>
 
-                  {/* Palabras clave */}
                   <div className="flex flex-wrap gap-1 mb-3">
                     {card?.palabrasClave?.slice(0, 3).map((kw, i) => (
                       <span key={i} className="text-[9px] px-2 py-0.5 rounded-full"
                         style={{
-                          background: `${card?.palo ? PALO_COLORS[card.palo] : '#c9a84c'}18`,
-                          color: card?.palo ? PALO_COLORS[card.palo] : '#c9a84c',
-                          border: `0.5px solid ${card?.palo ? PALO_COLORS[card.palo] : '#c9a84c'}30`,
+                          background: `${color}18`,
+                          color,
+                          border: `0.5px solid ${color}30`,
                         }}>
                         {kw}
                       </span>
@@ -208,7 +155,7 @@ export default function TarotDailyCard({ user }) {
               const isToday = row.drawn_date === new Date().toISOString().split('T')[0]
               return (
                 <div key={i} className="flex items-center gap-3 py-2.5 border-b border-white/5 last:border-0">
-                  <TarotCardVisual card={row.card} size="sm" />
+                  <TarotCardSVG card={row.card} size="sm" />
                   <div className="flex-1">
                     <div className="text-xs text-white">{row.card?.nombre}</div>
                     <div className="text-[10px] text-white/30 mt-0.5">
