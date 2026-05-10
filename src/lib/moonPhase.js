@@ -170,3 +170,164 @@ export function getMoonSvgPath(phase) {
     termSweep,
   }
 }
+
+// ═══════════════════════════════════════════════════════
+// DATOS CIENTÍFICOS ASTRONÓMICOS EN TIEMPO REAL
+// ═══════════════════════════════════════════════════════
+
+const SYNODIC_MONTH = 29.53058770576
+const KNOWN_NEW_MOON = new Date('2000-01-06T18:14:00Z')
+
+// Distancia media y variación de la Luna
+const MOON_MEAN_DISTANCE = 384400 // km
+const MOON_PERIGEE = 356500       // km (punto más cercano)
+const MOON_APOGEE = 406700        // km (punto más lejano)
+
+// Constelaciones zodiacales y sus rangos de longitud eclíptica
+const CONSTELACIONES_ZODIACALES = [
+  { nombre: 'Aries', emoji: '♈', inicio: 0 },
+  { nombre: 'Tauro', emoji: '♉', inicio: 30 },
+  { nombre: 'Géminis', emoji: '♊', inicio: 60 },
+  { nombre: 'Cáncer', emoji: '♋', inicio: 90 },
+  { nombre: 'Leo', emoji: '♌', inicio: 120 },
+  { nombre: 'Virgo', emoji: '♍', inicio: 150 },
+  { nombre: 'Libra', emoji: '♎', inicio: 180 },
+  { nombre: 'Escorpio', emoji: '♏', inicio: 210 },
+  { nombre: 'Sagitario', emoji: '♐', inicio: 240 },
+  { nombre: 'Capricornio', emoji: '♑', inicio: 270 },
+  { nombre: 'Acuario', emoji: '♒', inicio: 300 },
+  { nombre: 'Piscis', emoji: '♓', inicio: 330 },
+]
+
+/**
+ * Calcula la longitud eclíptica aproximada de la Luna
+ * Basado en el ángulo de fase respecto al Sol
+ */
+function getLunarEclipticLongitude(date) {
+  const diffMs = date.getTime() - KNOWN_NEW_MOON.getTime()
+  const diffDays = diffMs / (1000 * 60 * 60 * 24)
+  const phase = ((diffDays % SYNODIC_MONTH) / SYNODIC_MONTH + 1) % 1
+
+  // Longitud solar aproximada basada en el día del año
+  const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000)
+  const solarLongitude = ((dayOfYear - 80) / 365.25) * 360
+
+  // Longitud lunar = longitud solar + ángulo de fase
+  const lunarLongitude = (solarLongitude + phase * 360) % 360
+  return lunarLongitude < 0 ? lunarLongitude + 360 : lunarLongitude
+}
+
+/**
+ * Obtiene la constelación en la que se encuentra la Luna hoy
+ */
+function getConstelacionLunar(date) {
+  const longitud = getLunarEclipticLongitude(date)
+  const idx = Math.floor(longitud / 30) % 12
+  return CONSTELACIONES_ZODIACALES[idx]
+}
+
+/**
+ * Calcula la distancia aproximada de la Luna en km
+ * Varía entre perigeo y apogeo según la fase del ciclo anomalístico
+ */
+function getDistanciaLunar(date) {
+  const diffMs = date.getTime() - KNOWN_NEW_MOON.getTime()
+  const diffDays = diffMs / (1000 * 60 * 60 * 24)
+
+  // Ciclo anomalístico: 27.55 días (período entre perigeos)
+  const anomalisticMonth = 27.554551
+  const anomaly = ((diffDays % anomalisticMonth) / anomalisticMonth) * Math.PI * 2
+
+  // Distancia varía sinusoidalmente entre perigeo y apogeo
+  const variacion = (MOON_APOGEE - MOON_PERIGEE) / 2
+  const media = (MOON_APOGEE + MOON_PERIGEE) / 2
+  const distancia = media - variacion * Math.cos(anomaly)
+
+  return Math.round(distancia)
+}
+
+/**
+ * Calcula la velocidad orbital de la Luna (km/s)
+ * Varía entre ~0.97 km/s en apogeo y ~1.08 km/s en perigeo
+ */
+function getVelocidadOrbital(distanciaKm) {
+  // Velocidad orbital circular: v = sqrt(GM/r)
+  // GM lunar ≈ 4.9048695e12 m³/s²
+  const GM_TIERRA = 3.986e14 // m³/s²
+  const r = distanciaKm * 1000 // metros
+  const velocidad = Math.sqrt(GM_TIERRA / r) / 1000 // km/s
+  return velocidad.toFixed(2)
+}
+
+/**
+ * Determina si es Superluna o Microluna
+ */
+function getTipoDistancia(distanciaKm, phase) {
+  const esFaseLlena = phase > 0.45 && phase < 0.55
+  const esFaseNueva = phase < 0.05 || phase > 0.95
+
+  if (distanciaKm < 362000) {
+    if (esFaseLlena) return { tipo: '🌕✨ Superluna', descripcion: 'La Luna llena más cercana y grande del año' }
+    if (esFaseNueva) return { tipo: '🌑✨ Superperigeo', descripcion: 'Luna nueva en su punto más cercano' }
+  }
+  if (distanciaKm > 400000) {
+    if (esFaseLlena) return { tipo: '🌕 Microluna', descripcion: 'La Luna llena más lejana y pequeña' }
+  }
+  return null
+}
+
+/**
+ * Calcula días hasta la próxima luna llena o nueva
+ */
+function getDiasHastaProximaFase(date) {
+  const diffMs = date.getTime() - KNOWN_NEW_MOON.getTime()
+  const diffDays = diffMs / (1000 * 60 * 60 * 24)
+  const phase = ((diffDays % SYNODIC_MONTH) / SYNODIC_MONTH + 1) % 1
+
+  let diasHastaLlena = ((0.5 - phase) * SYNODIC_MONTH + SYNODIC_MONTH) % SYNODIC_MONTH
+  let diasHastaNueva = ((1 - phase) * SYNODIC_MONTH + SYNODIC_MONTH) % SYNODIC_MONTH
+
+  if (diasHastaLlena < 0.5) diasHastaLlena = 0
+  if (diasHastaNueva < 0.5) diasHastaNueva = 0
+
+  return {
+    diasHastaLlena: Math.round(diasHastaLlena),
+    diasHastaNueva: Math.round(diasHastaNueva),
+  }
+}
+
+/**
+ * Función principal: retorna todos los datos científicos de la Luna para hoy
+ */
+export function getDatosAstronomicosDeLuna(date = new Date()) {
+  const diffMs = date.getTime() - KNOWN_NEW_MOON.getTime()
+  const diffDays = diffMs / (1000 * 60 * 60 * 24)
+  const phase = ((diffDays % SYNODIC_MONTH) / SYNODIC_MONTH + 1) % 1
+
+  const distancia = getDistanciaLunar(date)
+  const velocidad = getVelocidadOrbital(distancia)
+  const constelacion = getConstelacionLunar(date)
+  const tipoDistancia = getTipoDistancia(distancia, phase)
+  const proximaFase = getDiasHastaProximaFase(date)
+
+  // Tamaño angular aparente (diámetro angular en arcominutos)
+  // Diámetro real Luna = 3474 km
+  const diametroAngular = ((3474 / distancia) * (180 / Math.PI) * 60).toFixed(1)
+
+  // Energía de marea (relativa, mayor en perigeo)
+  const fuerzaMareal = ((MOON_MEAN_DISTANCE / distancia) ** 3 * 100).toFixed(1)
+
+  return {
+    distanciaKm: distancia.toLocaleString('es-AR'),
+    distanciaKmNum: distancia,
+    velocidadKms: velocidad,
+    constelacion,
+    tipoDistancia,
+    diametroAngular,
+    fuerzaMareal,
+    diasHastaLlena: proximaFase.diasHastaLlena,
+    diasHastaNueva: proximaFase.diasHastaNueva,
+    esCercana: distancia < 370000,
+    esLejana: distancia > 400000,
+  }
+}
