@@ -5,6 +5,7 @@ import MoonPhaseCard from '../components/MoonPhaseCard'
 import TarotDailyCard from '../components/TarotDailyCard'
 import RitualesCard from '../components/RitualesCard'
 import EventosAstronomicos from '../components/EventosAstronomicos'
+import DatoCurioso from '../components/DatoCurioso'
 import NotificacionesConfig from '../components/NotificacionesConfig'
 import { getNotificationPrefs, checkUpcomingEvents } from '../lib/notifications'
 import { getProximosEventos } from '../lib/eventosAstronomicos'
@@ -12,12 +13,11 @@ import { getProximosEventos } from '../lib/eventosAstronomicos'
 export default function Home() {
   const { user, signOut } = useAuth()
   const [showNotifConfig, setShowNotifConfig] = useState(false)
-  const name = user?.user_metadata?.name || user?.email?.split('@')[0] || 'Luna'
+  const name = user?.user_metadata?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Luna'
 
   const hora = new Date().getHours()
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches'
 
-  // Verificar eventos próximos al cargar
   useEffect(() => {
     const prefs = getNotificationPrefs()
     if (prefs.enabled && prefs.eventos) {
@@ -62,6 +62,7 @@ export default function Home() {
         </div>
 
         <MoonPhaseCard />
+        <DatoCurioso />
         <TarotDailyCard user={user} />
         <RitualesCard />
         <EventosAstronomicos />
