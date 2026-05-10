@@ -6,6 +6,7 @@ import TarotDailyCard from '../components/TarotDailyCard'
 import RitualesCard from '../components/RitualesCard'
 import EventosAstronomicos from '../components/EventosAstronomicos'
 import DatoCurioso from '../components/DatoCurioso'
+import Footer from '../components/Footer'
 import NotificacionesConfig from '../components/NotificacionesConfig'
 import { getNotificationPrefs, checkUpcomingEvents } from '../lib/notifications'
 import { getProximosEventos } from '../lib/eventosAstronomicos'
@@ -27,7 +28,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="relative min-h-screen pb-24 pb-safe">
+    <div className="relative min-h-screen pb-6 pb-safe">
       <StarsCanvas />
 
       <nav className="sticky top-0 z-20 flex justify-between items-center px-5 py-4 border-b border-luna-gold/10 bg-luna-bg/70 backdrop-blur-md">
@@ -66,6 +67,7 @@ export default function Home() {
         <TarotDailyCard user={user} />
         <RitualesCard />
         <EventosAstronomicos />
+        <Footer />
       </div>
 
       {showNotifConfig && (
