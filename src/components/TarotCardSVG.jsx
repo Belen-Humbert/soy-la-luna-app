@@ -641,25 +641,23 @@ export default function TarotCardSVG({ card, size = 'md' }) {
         </g>
       </g>
 
-      {/* Separador */}
-      <line x1="12" y1="98" x2="60" y2="98"
-        stroke={color} strokeWidth="0.3" opacity="0.3"/>
-
-      {/* Nombre abajo */}
-      <text x="36" y="105" textAnchor="middle"
-        fontSize="5" fontFamily="Georgia, serif"
-        fill={color} opacity="0.9" letterSpacing="0.3">
-        {card.nombre.length > 14 ? card.nombre.slice(0, 14).toUpperCase() + '…' : card.nombre.toUpperCase()}
-      </text>
-
-      {/* Palo (menores) */}
-      {card.palo && (
-        <text x="36" y="111" textAnchor="middle"
-          fontSize="4.5" fontFamily="Georgia, serif"
-          fill={color} opacity="0.4" letterSpacing="0.5">
-          {card.palo.toUpperCase()}
+      {/* Separador y texto — dentro del clip */}
+      <g clipPath={`url(#clip-${card.index})`}>
+        <line x1="12" y1="97" x2="60" y2="97"
+          stroke={color} strokeWidth="0.3" opacity="0.3"/>
+        <text x="36" y="104" textAnchor="middle"
+          fontSize="5" fontFamily="Georgia, serif"
+          fill={color} opacity="0.9" letterSpacing="0.3">
+          {card.nombre.toUpperCase()}
         </text>
-      )}
+        {card.palo && (
+          <text x="36" y="110" textAnchor="middle"
+            fontSize="4.5" fontFamily="Georgia, serif"
+            fill={color} opacity="0.4" letterSpacing="0.5">
+            {card.palo.toUpperCase()}
+          </text>
+        )}
+      </g>
     </svg>
   )
 }
