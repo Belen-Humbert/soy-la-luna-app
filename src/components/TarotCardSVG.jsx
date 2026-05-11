@@ -648,3 +648,61 @@ export default function TarotCardSVG({ card, size = 'md' }) {
     </svg>
   )
 }
+
+// Dorso de la carta — se muestra antes de revelar
+export function TarotCardBack({ size = 'lg' }) {
+  const sizes = {
+    sm: { w: 40, h: 64 },
+    md: { w: 120, h: 190 },
+    lg: { w: 160, h: 256 },
+  }
+  const s = sizes[size] || sizes.lg
+
+  return (
+    <svg width={s.w} height={s.h} viewBox="0 0 72 114" xmlns="http://www.w3.org/2000/svg">
+      {/* Fondo */}
+      <rect x="0" y="0" width="72" height="114" rx="6" fill="#0d111a" stroke="#c9a84c" strokeWidth="0.8"/>
+      {/* Marco doble */}
+      <rect x="4" y="4" width="64" height="106" rx="4" fill="none" stroke="rgba(201,168,76,0.25)" strokeWidth="0.5"/>
+      <rect x="7" y="7" width="58" height="100" rx="3" fill="none" stroke="rgba(201,168,76,0.12)" strokeWidth="0.4"/>
+
+      {/* Patrón de fondo — rombos */}
+      {Array.from({length: 7}).map((_, row) =>
+        Array.from({length: 5}).map((_, col) => (
+          <rect key={`${row}-${col}`}
+            x={10 + col * 12} y={12 + row * 14}
+            width="6" height="6"
+            rx="0.5"
+            transform={`rotate(45, ${13 + col * 12}, ${15 + row * 14})`}
+            fill="none" stroke="rgba(201,168,76,0.08)" strokeWidth="0.4"/>
+        ))
+      )}
+
+      {/* Luna creciente central */}
+      <circle cx="36" cy="50" r="16" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.3)" strokeWidth="0.6"/>
+      <circle cx="41" cy="46" r="13" fill="#0d111a"/>
+      <circle cx="41" cy="46" r="13" fill="none" stroke="rgba(201,168,76,0.1)" strokeWidth="0.3"/>
+
+      {/* Estrellas alrededor */}
+      {[
+        [36, 26], [50, 34], [56, 50], [50, 66], [36, 74],
+        [22, 66], [16, 50], [22, 34]
+      ].map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="1.2" fill="rgba(201,168,76,0.4)"/>
+      ))}
+
+      {/* Líneas decorativas */}
+      <line x1="36" y1="30" x2="36" y2="24" stroke="rgba(201,168,76,0.2)" strokeWidth="0.4"/>
+      <line x1="36" y1="70" x2="36" y2="76" stroke="rgba(201,168,76,0.2)" strokeWidth="0.4"/>
+      <line x1="20" y1="50" x2="14" y2="50" stroke="rgba(201,168,76,0.2)" strokeWidth="0.4"/>
+      <line x1="52" y1="50" x2="58" y2="50" stroke="rgba(201,168,76,0.2)" strokeWidth="0.4"/>
+
+      {/* Texto inferior */}
+      <text x="36" y="107" textAnchor="middle"
+        fontSize="5.5" fontFamily="Georgia, serif"
+        fill="rgba(201,168,76,0.4)" letterSpacing="1.5">
+        SOY LA LUNA
+      </text>
+    </svg>
+  )
+}

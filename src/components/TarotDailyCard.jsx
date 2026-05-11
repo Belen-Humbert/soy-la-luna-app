@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTarotDaily } from '../hooks/useTarotDaily'
-import TarotCardSVG from './TarotCardSVG'
+import TarotCardSVG, { TarotCardBack } from './TarotCardSVG'
 
 const PALO_COLORS = {
   'Copas': '#e8a4b0',
@@ -58,13 +58,12 @@ export default function TarotDailyCard({ user }) {
 
           {!revealed ? (
             <div className="flex flex-col items-center py-4">
-              {/* Carta boca abajo */}
+              {/* Dorso de la carta — completamente oculta */}
               <div
                 className={`cursor-pointer transition-transform duration-300 ${isFlipping ? 'scale-x-0' : 'scale-x-100'}`}
                 onClick={handleReveal}
-                style={{ filter: 'brightness(0.3)' }}
               >
-                <TarotCardSVG card={card} size="lg" />
+                <TarotCardBack size="lg" />
               </div>
               <p className="text-white/30 text-xs mt-4 text-center">
                 Tocá la carta para revelar tu arcano de hoy
