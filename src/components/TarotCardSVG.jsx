@@ -618,12 +618,21 @@ export default function TarotCardSVG({ card, size = 'md' }) {
       <rect x="7" y="7" width="58" height="100" rx="3"
         fill="none" stroke={color} strokeOpacity="0.12" strokeWidth="0.4"/>
 
-      {/* Numeral arriba */}
-      <text x="36" y="13" textAnchor="middle"
-        fontSize="6" fontFamily="Georgia, serif"
-        fill={color} opacity="0.9">
-        {card.numeral.length > 6 ? card.numeral.slice(0, 6) : card.numeral}
-      </text>
+      {/* Numeral arriba — solo para arcanos con numeral corto */}
+      {!['Paje','Caballero','Reina','Rey','As'].includes(card.numeral) && (
+        <text x="36" y="13" textAnchor="middle"
+          fontSize="6" fontFamily="Georgia, serif"
+          fill={color} opacity="0.9">
+          {card.numeral}
+        </text>
+      )}
+      {card.numeral === 'As' && (
+        <text x="36" y="13" textAnchor="middle"
+          fontSize="6" fontFamily="Georgia, serif"
+          fill={color} opacity="0.9">
+          As
+        </text>
+      )}
 
       {/* Ilustración — área central */}
       <g transform="translate(0, 14)" color={color} style={{ color }} clipPath={`url(#clip-${card.index})`}>
