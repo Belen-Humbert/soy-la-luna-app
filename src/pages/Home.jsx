@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import StarsCanvas from '../components/StarsCanvas'
+import Navbar from '../components/Navbar'
 import MoonPhaseCard from '../components/MoonPhaseCard'
 import TarotDailyCard from '../components/TarotDailyCard'
 import RitualesCard from '../components/RitualesCard'
@@ -12,7 +13,7 @@ import { getNotificationPrefs, checkUpcomingEvents } from '../lib/notifications'
 import { getProximosEventos } from '../lib/eventosAstronomicos'
 
 export default function Home() {
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
   const [showNotifConfig, setShowNotifConfig] = useState(false)
   const name = user?.user_metadata?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Luna'
 
@@ -31,29 +32,12 @@ export default function Home() {
     <div className="relative min-h-screen pb-6 pb-safe">
       <StarsCanvas />
 
-      <nav className="sticky top-0 z-20 flex justify-between items-center px-5 py-4 border-b border-luna-gold/10 bg-luna-bg/70 backdrop-blur-md">
-        <div className="font-serif italic text-luna-gold text-lg flex items-center gap-2">
-          🌙 Soy La Luna
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowNotifConfig(true)}
-            className="text-white/30 hover:text-luna-gold transition-colors text-lg"
-            title="Notificaciones"
-          >
-            🔔
-          </button>
-          <button
-            onClick={signOut}
-            className="text-white/30 text-xs hover:text-white/60 transition-colors"
-          >
-            Salir
-          </button>
-        </div>
-      </nav>
+      {/* Navbar con links de sección */}
+      <Navbar onNotifClick={() => setShowNotifConfig(true)} />
 
-      <div className="relative z-10">
-        <div className="text-center px-4 pt-7 pb-5">
+      <div className="relative z-10 pt-24">
+        {/* Saludo */}
+        <div className="text-center px-4 pb-5">
           <p className="text-[10px] tracking-[3px] uppercase text-luna-gold mb-1">
             ✦ La luna nos guía ✦
           </p>
@@ -62,11 +46,27 @@ export default function Home() {
           </h1>
         </div>
 
-        <MoonPhaseCard />
-        <DatoCurioso />
-        <TarotDailyCard user={user} />
-        <RitualesCard />
-        <EventosAstronomicos />
+        {/* Sección: Luna */}
+        <div id="section-luna">
+          <MoonPhaseCard />
+          <DatoCurioso />
+        </div>
+
+        {/* Sección: Tarot */}
+        <div id="section-tarot">
+          <TarotDailyCard user={user} />
+        </div>
+
+        {/* Sección: Rituales */}
+        <div id="section-rituales">
+          <RitualesCard />
+        </div>
+
+        {/* Sección: Eventos */}
+        <div id="section-eventos">
+          <EventosAstronomicos />
+        </div>
+
         <Footer />
       </div>
 
