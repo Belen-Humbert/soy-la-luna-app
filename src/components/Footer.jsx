@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="text-center mb-4">
             <p className="font-serif italic text-luna-rose text-lg mb-0.5">🌙 La Luna</p>
             <p className="text-white/30 text-[10px] tracking-widest uppercase">
-              Lecturas que nos ayudan a conectar ✦
+              Lecturas conscientes para momentos de claridad
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-center text-white/20 text-[10px] tracking-wider">
-            © 2025 La Luna — Belén Humbert ✦
+            © 2025 La Luna — Belén Humbert · Hecho con intención ✦
           </p>
         </div>
       </div>
