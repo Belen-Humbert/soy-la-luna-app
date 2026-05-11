@@ -3,12 +3,10 @@ export default function Footer() {
     <footer className="relative z-10 mx-4 mb-6 mt-2">
       <div className="relative overflow-hidden rounded-2xl border border-luna-gold/20 bg-gradient-to-b from-[#1e2838]/90 to-[#151d2a]/90 backdrop-blur-sm p-5">
 
-        {/* Glow sutil */}
         <div className="absolute inset-0 opacity-10 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 50% 100%, #c9a84c40 0%, transparent 70%)' }} />
 
         <div className="relative z-10">
-          {/* Logo y lema */}
           <div className="text-center mb-4">
             <p className="font-serif italic text-luna-rose text-lg mb-0.5">🌙 La Luna</p>
             <p className="text-white/30 text-[10px] tracking-widest uppercase">
@@ -16,10 +14,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links de contacto */}
           <div className="flex flex-wrap justify-center gap-2 mb-4">
-
-            {/* Instagram */}
             <a href="https://instagram.com/brujita.lavallina"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/8 hover:bg-white/10 hover:border-luna-rose/30 transition-all text-white/50 hover:text-luna-rose text-xs">
@@ -31,7 +26,6 @@ export default function Footer() {
               @brujita.lavallina
             </a>
 
-            {/* WhatsApp */}
             <a href="https://wa.me/542617038693"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/8 hover:bg-white/10 hover:border-green-400/30 transition-all text-white/50 hover:text-green-400 text-xs">
@@ -41,7 +35,6 @@ export default function Footer() {
               WhatsApp
             </a>
 
-            {/* Email */}
             <a href="mailto:labrujitalavallina@gmail.com"
               className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/8 hover:bg-white/10 hover:border-luna-gold/30 transition-all text-white/50 hover:text-luna-gold text-xs">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -51,7 +44,6 @@ export default function Footer() {
               labrujitalavallina@gmail.com
             </a>
 
-            {/* La Luna landing */}
             <a href="https://belen-humbert.github.io/Soy-La-Luna-LandingPage/"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-luna-gold/20 hover:bg-luna-gold/10 hover:border-luna-gold/40 transition-all text-luna-gold/60 hover:text-luna-gold text-xs">
@@ -63,10 +55,8 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Separador */}
           <div className="h-px bg-white/5 mb-3"/>
 
-          {/* Copyright */}
           <p className="text-center text-white/20 text-[10px] tracking-wider">
             © 2025 La Luna — Belén Humbert ✦
           </p>

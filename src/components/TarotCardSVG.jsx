@@ -643,15 +643,15 @@ export default function TarotCardSVG({ card, size = 'md' }) {
 
       {/* Separador y texto — dentro del clip */}
       <g clipPath={`url(#clip-${card.index})`}>
-        <line x1="12" y1="97" x2="60" y2="97"
+        <line x1="12" y1="92" x2="60" y2="92"
           stroke={color} strokeWidth="0.3" opacity="0.3"/>
-        <text x="36" y="104" textAnchor="middle"
+        <text x="36" y="99" textAnchor="middle"
           fontSize="5" fontFamily="Georgia, serif"
           fill={color} opacity="0.9" letterSpacing="0.3">
           {card.nombre.toUpperCase()}
         </text>
         {card.palo && (
-          <text x="36" y="110" textAnchor="middle"
+          <text x="36" y="106" textAnchor="middle"
             fontSize="4.5" fontFamily="Georgia, serif"
             fill={color} opacity="0.4" letterSpacing="0.5">
             {card.palo.toUpperCase()}
