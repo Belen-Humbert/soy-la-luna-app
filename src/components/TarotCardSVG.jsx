@@ -602,6 +602,12 @@ export default function TarotCardSVG({ card, size = 'md' }) {
       xmlns="http://www.w3.org/2000/svg"
       style={{ flexShrink: 0 }}
     >
+      <defs>
+        <clipPath id={`clip-${card.index}`}>
+          <rect x="1" y="1" width="70" height="112" rx="5"/>
+        </clipPath>
+      </defs>
+
       {/* Fondo */}
       <rect x="0" y="0" width="72" height="114" rx="6"
         fill="#0f0e1a" stroke={color} strokeWidth="0.8"/>
@@ -613,14 +619,14 @@ export default function TarotCardSVG({ card, size = 'md' }) {
         fill="none" stroke={color} strokeOpacity="0.12" strokeWidth="0.4"/>
 
       {/* Numeral arriba */}
-      <text x="36" y="14" textAnchor="middle"
-        fontSize="7" fontFamily="Georgia, serif"
+      <text x="36" y="13" textAnchor="middle"
+        fontSize="6" fontFamily="Georgia, serif"
         fill={color} opacity="0.9">
-        {card.numeral}
+        {card.numeral.length > 6 ? card.numeral.slice(0, 6) : card.numeral}
       </text>
 
       {/* Ilustración — área central */}
-      <g transform="translate(0, 14)" color={color} style={{ color }}>
+      <g transform="translate(0, 14)" color={color} style={{ color }} clipPath={`url(#clip-${card.index})`}>
         <g style={{ stroke: color, fill: 'none' }}>
           {ilustracion}
         </g>
@@ -631,16 +637,16 @@ export default function TarotCardSVG({ card, size = 'md' }) {
         stroke={color} strokeWidth="0.3" opacity="0.3"/>
 
       {/* Nombre abajo */}
-      <text x="36" y="107" textAnchor="middle"
-        fontSize="6" fontFamily="Georgia, serif"
-        fill={color} opacity="0.9" letterSpacing="0.5">
-        {card.nombre.toUpperCase()}
+      <text x="36" y="105" textAnchor="middle"
+        fontSize="5" fontFamily="Georgia, serif"
+        fill={color} opacity="0.9" letterSpacing="0.3">
+        {card.nombre.length > 14 ? card.nombre.slice(0, 14).toUpperCase() + '…' : card.nombre.toUpperCase()}
       </text>
 
       {/* Palo (menores) */}
       {card.palo && (
-        <text x="36" y="112" textAnchor="middle"
-          fontSize="5" fontFamily="Georgia, serif"
+        <text x="36" y="111" textAnchor="middle"
+          fontSize="4.5" fontFamily="Georgia, serif"
           fill={color} opacity="0.4" letterSpacing="0.5">
           {card.palo.toUpperCase()}
         </text>
