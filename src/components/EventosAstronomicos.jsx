@@ -48,6 +48,7 @@ export default function EventosAstronomicos() {
   const [selectedEvent, setSelectedEvent] = useState(null)
   const { apod, loading: apodLoading } = useNasaApod()
 
+  const [nextExpanded, setNextExpanded] = useState(false)
   const eventos = useMemo(() => getProximosEventos(new Date(), 12), [])
   const visibles = showAll ? eventos : eventos.slice(0, 4)
 
@@ -84,11 +85,25 @@ export default function EventosAstronomicos() {
                     {nextEvent.tipo}
                   </h3>
                 </div>
-                <p className="text-white/45 text-xs leading-relaxed line-clamp-2">
+                <p className={`text-white/45 text-xs leading-relaxed ${nextExpanded ? '' : 'line-clamp-2'}`}>
                   {nextEvent.descripcion}
                 </p>
-                <div className="mt-2">
+                {nextEvent.visible && nextExpanded && (
+                  <p className="text-[10px] text-white/25 mt-1">📍 {nextEvent.visible}</p>
+                )}
+                {nextEvent.duracion && nextExpanded && (
+                  <p className="text-[10px] text-white/25 mt-0.5">⏱ {nextEvent.duracion}</p>
+                )}
+                <div className="mt-2 flex items-center gap-2">
                   <DaysUntilBadge days={nextEvent.daysUntil} />
+                  {nextEvent.descripcion.length > 80 && (
+                    <button
+                      onClick={() => setNextExpanded(!nextExpanded)}
+                      className="text-[10px] text-white/25 hover:text-luna-gold transition-colors"
+                    >
+                      {nextExpanded ? 'Ver menos ▲' : 'Ver más ▼'}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
