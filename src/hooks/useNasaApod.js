@@ -12,26 +12,54 @@ export function useNasaApod() {
   }, [])
 
   const fetchApod = async () => {
+    // Clave de caché basada en la fecha de hoy
+    const today = new Date().toISOString().split('T')[0]
+    const cacheKey = `nasa-apod-${today}`
+
+    // Intentar cargar desde caché primero
     try {
-      // Intentar con la imagen de hoy
+      const cached = localStorage.getItem(cacheKey)
+      if (cached) {
+        setApod(JSON.parse(cached))
+        setLoading(false)
+        return
+      }
+    } catch {}
+
+    try {
+      // Pedir la imagen de HOY específicamente
       const res = await fetch(
-        `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
+        `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&date=${today}`
       )
       if (!res.ok) throw new Error('Error NASA API')
       const data = await res.json()
 
       if (data.media_type === 'image') {
+        // Guardar en caché para todo el día
+        try { localStorage.setItem(cacheKey, JSON.stringify(data)) } catch {}
         setApod(data)
       } else {
-        // Si hoy es video, buscar las últimas 5 y tomar la primera imagen
-        const res2 = await fetch(
-          `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&count=5`
-        )
-        if (!res2.ok) throw new Error('Error NASA API fallback')
-        const items = await res2.json()
-        const imageItem = items.find(i => i.media_type === 'image')
-        if (imageItem) setApod(imageItem)
-        else setError('No image available')
+        // Hoy es video — buscar la última imagen reciente
+        // Probamos los últimos 7 días hasta encontrar una imagen
+        let found = false
+        for (let i = 1; i <= 7 && !found; i++) {
+          const d = new Date()
+          d.setDate(d.getDate() - i)
+          const dateStr = d.toISOString().split('T')[0]
+          try {
+            const r2 = await fetch(
+              `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&date=${dateStr}`
+            )
+            if (!r2.ok) continue
+            const d2 = await r2.json()
+            if (d2.media_type === 'image') {
+              try { localStorage.setItem(cacheKey, JSON.stringify(d2)) } catch {}
+              setApod(d2)
+              found = true
+            }
+          } catch {}
+        }
+        if (!found) setError('No image available')
       }
     } catch (e) {
       setError(e.message)
