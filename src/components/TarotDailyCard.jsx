@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTarotDaily } from '../hooks/useTarotDaily'
 import TarotCardSVG, { TarotCardBack } from './TarotCardSVG'
+import PromoModal, { shouldShowPromo } from './PromoModal'
 
 const PALO_COLORS = {
   'Copas': '#e8a4b0',
@@ -13,6 +14,7 @@ export default function TarotDailyCard({ user }) {
   const { card, history, loading, saving, revealed, revealCard } = useTarotDaily(user)
   const [showHistory, setShowHistory] = useState(false)
   const [isFlipping, setIsFlipping] = useState(false)
+  const [showPromo, setShowPromo] = useState(false)
 
   const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
   const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
@@ -23,6 +25,10 @@ export default function TarotDailyCard({ user }) {
     setTimeout(() => {
       revealCard()
       setIsFlipping(false)
+      // Mostrar promo una vez por día después de revelar
+      setTimeout(() => {
+        if (shouldShowPromo()) setShowPromo(true)
+      }, 1200)
     }, 400)
   }
 
@@ -37,6 +43,7 @@ export default function TarotDailyCard({ user }) {
   }
 
   return (
+    <>
     <div className="mx-4 mb-3">
       <div className="relative overflow-hidden rounded-2xl border border-luna-gold/20 bg-gradient-to-b from-[#1e2838]/90 to-[#151d2a]/90 backdrop-blur-sm">
 
@@ -171,5 +178,10 @@ export default function TarotDailyCard({ user }) {
         </div>
       )}
     </div>
+
+    {showPromo && (
+      <PromoModal onClose={() => setShowPromo(false)} />
+    )}
+  </>
   )
 }
