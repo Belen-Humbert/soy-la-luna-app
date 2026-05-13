@@ -865,17 +865,28 @@ export const TAROT_CARDS = [
  * pero diferente para cada usuaria
  */
 export function getCardOfTheDay(userId, date = new Date()) {
-  const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-  const seed = `${userId}-${dateStr}`
+  const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`
+  const seed = `${userId}::${dateStr}::tarot`
 
-  // Hash simple del seed para obtener un índice consistente
-  let hash = 0
+  // Hash de 32 bits más robusto (FNV-1a) — mejor distribución
+  let hash = 2166136261
   for (let i = 0; i < seed.length; i++) {
-    const char = seed.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
-    hash = hash & hash // Convertir a 32bit integer
+    hash ^= seed.charCodeAt(i)
+    hash = Math.imul(hash, 16777619)
+    hash >>>= 0 // unsigned 32-bit
   }
 
-  const index = Math.abs(hash) % TAROT_CARDS.length
+  // Segunda pasada para mayor entropía
+  let hash2 = hash ^ 0xdeadbeef
+  for (let i = seed.length - 1; i >= 0; i--) {
+    hash2 ^= seed.charCodeAt(i) * (i + 1)
+    hash2 = Math.imul(hash2, 2654435761)
+    hash2 >>>= 0
+  }
+
+  // Combinar ambos hashes
+  const combined = (hash ^ (hash2 << 13) ^ (hash2 >>> 7)) >>> 0
+
+  const index = combined % TAROT_CARDS.length
   return TAROT_CARDS[index]
 }
